@@ -1,7 +1,10 @@
-﻿using aninja_rating_service.Models;
+﻿using aninja_rating_service.Dtos;
+using aninja_rating_service.Models;
 using aninja_rating_service.Queries;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace aninja_rating_service.Controllers
 {
@@ -10,13 +13,15 @@ namespace aninja_rating_service.Controllers
     public class RatingController : ControllerBase
     {
         private IMediator _mediator;
-        public RatingController(IMediator mediator)
+        private IMapper _mapper;
+        public RatingController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [HttpGet("anime/{animeId}/rating")]
-        public async Task<ActionResult<IEnumerable<Rating>>> GetRatingsForAnime(int animeId)
+        public async Task<ActionResult<IEnumerable<RatingDto>>> GetRatingsForAnime(int animeId)
         {
             var request = new GetRatingsForAnimeQuery
             {
@@ -24,7 +29,7 @@ namespace aninja_rating_service.Controllers
             };
             var result = await _mediator.Send(request);
             if (result is null) return NotFound();
-            return Ok(result);
+            return Ok(_mapper.Map<RatingDto>(result));
         }
     }
 }
