@@ -71,6 +71,7 @@ public class RatingRepository : IRatingRepository
 
     public async Task<bool> AnimeExists(int animeId)
     {
+        var someAnimes = (await _animeCollection.FindAsync(x => true)).ToList();
         var cursor = await _animeCollection.FindAsync(x => x.ExternalId == animeId);
         var anime = await cursor.FirstOrDefaultAsync();
         return anime is not null;
