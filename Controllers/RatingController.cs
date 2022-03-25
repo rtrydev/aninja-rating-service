@@ -37,7 +37,7 @@ namespace aninja_rating_service.Controllers
         public async Task<ActionResult<RatingDto>> AddRating([FromBody] RatingAddDto ratingAddDto, int animeId)
         {
             //var userId = User.Claims.First(x => x.Type == "id").Value;
-            var userId = "4D5CA946-7001-4BC2-A8FA-A197208EF394";
+            var userId = "4E5CA946-7001-4BC2-A8FA-A197208EF394";
             var request = new AddRatingCommand()
             {
                 SubmitterId = new Guid(userId),
@@ -48,6 +48,36 @@ namespace aninja_rating_service.Controllers
             var result = await _mediator.Send(request);
             if(result is null) return Forbid();
             return Ok(_mapper.Map<RatingDto>(result));
+        }
+        [HttpGet("anime/{animeId}/rating/avg")]
+        public async Task<ActionResult<decimal>> GetAverageRating(int animeId)
+        {
+            var query = new GetAverageRatingForAnimeQuery()
+            {
+                AnimeId = animeId
+            };
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet("user/{userId}/rating")]
+        public async Task<ActionResult<IEnumerable<RatingDto>>> GetRatingsByUser(string userId)
+        {
+            Guid userGuid;
+            try
+            {
+                userGuid = Guid.Parse(userId);
+            } catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            var query = new GetRatingsByUserQuery()
+            {
+                UserId = userGuid
+            };
+            var result = await _mediator.Send(query);
+            if (result is null) return NotFound();
+            return Ok(result);
         }
     }
 }
