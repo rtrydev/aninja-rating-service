@@ -23,6 +23,8 @@ namespace aninja_rating_service.Handlers
                 Comment = request.Comment,
                 SubmitterId = request.SubmitterId
             };
+            var ratinginDb = await _ratingRepository.GetRatingsByUser(request.SubmitterId);
+            if (ratinginDb.Any(x => x.AnimeId == request.AnimeId)) return null;
 
             var result = await _ratingRepository.AddRating(rating);
             return result;
