@@ -52,6 +52,7 @@ public class RatingRepository : IRatingRepository
     public async Task<Anime?> AddAnime(Anime anime)
     {
         if (await AnimeExists(anime.ExternalId)) return null;
+        anime.Id = Guid.NewGuid();
         await _animeCollection.InsertOneAsync(anime);
         return anime;
     }
