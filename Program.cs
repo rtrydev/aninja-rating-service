@@ -1,4 +1,6 @@
 using System.Text;
+using aninja_rating_service.AsyncDataServices;
+using aninja_rating_service.EventProcessing;
 using aninja_rating_service.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,6 +28,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
+builder.Services.AddHostedService<MessageBusSubscriber>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
