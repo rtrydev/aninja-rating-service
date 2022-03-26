@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "aninja_anime_service";
+
+service GrpcAnime {
+    rpc GetAllAnime (GetAllRequest) returns (AnimeResponse);
+}
+
+message GetAllRequest {}
+
+message GrpcAnimeModel {
+    int32 animeId = 1;
+    string translatedTitle = 2;
+}
+
+message AnimeResponse {
+    repeated GrpcAnimeModel anime = 1;
+}

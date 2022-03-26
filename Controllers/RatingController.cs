@@ -36,8 +36,7 @@ namespace aninja_rating_service.Controllers
         [HttpPost("anime/{animeId}/rating")]
         public async Task<ActionResult<RatingDto>> AddRating([FromBody] RatingAddDto ratingAddDto, int animeId)
         {
-            //var userId = User.Claims.First(x => x.Type == "id").Value;
-            var userId = "4E5CA946-7001-4BC2-A8FA-A197208EF394";
+            var userId = User.Claims.First(x => x.Type == "id").Value;
             var request = new AddRatingCommand()
             {
                 SubmitterId = new Guid(userId),
@@ -46,7 +45,7 @@ namespace aninja_rating_service.Controllers
                 Comment = ratingAddDto.Comment
             };
             var result = await _mediator.Send(request);
-            if(result is null) return Forbid();
+            if(result is null) return NotFound();
             return Ok(_mapper.Map<RatingDto>(result));
         }
         [HttpGet("anime/{animeId}/rating/avg")]

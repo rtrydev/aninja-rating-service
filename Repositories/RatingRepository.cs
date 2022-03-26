@@ -14,8 +14,9 @@ public class RatingRepository : IRatingRepository
         _animeCollection = mongoClient.GetDatabase("ratingDB").GetCollection<Anime>("animes");
     }
 
-    public async Task<IEnumerable<Rating>> GetRatingsForAnime(int animeId)
+    public async Task<IEnumerable<Rating>?> GetRatingsForAnime(int animeId)
     {
+        if(!await AnimeExists(animeId)) return null;
         var cursor = await _ratingCollection.FindAsync(x => x.AnimeId == animeId);
         var result = await cursor.ToListAsync();
         return result;
@@ -51,6 +52,7 @@ public class RatingRepository : IRatingRepository
     public async Task<Anime?> AddAnime(Anime anime)
     {
         if (await AnimeExists(anime.ExternalId)) return null;
+        anime.Id = Guid.NewGuid();
         await _animeCollection.InsertOneAsync(anime);
         return anime;
     }
@@ -59,7 +61,7 @@ public class RatingRepository : IRatingRepository
     {
         var animeInDb = await GetAnime(anime.ExternalId);
         if (animeInDb is null) return null;
-        animeInDb.Title = anime.Title;
+        animeInDb.TranslatedTitle = anime.TranslatedTitle;
         var result = await _animeCollection.FindOneAndReplaceAsync(x => x.ExternalId == anime.ExternalId, animeInDb);
         return result;
     }
