@@ -60,7 +60,7 @@ public class RatingRepository : IRatingRepository
     {
         var animeInDb = await GetAnime(anime.ExternalId);
         if (animeInDb is null) return null;
-        animeInDb.Title = anime.Title;
+        animeInDb.TranslatedTitle = anime.TranslatedTitle;
         var result = await _animeCollection.FindOneAndReplaceAsync(x => x.ExternalId == anime.ExternalId, animeInDb);
         return result;
     }
