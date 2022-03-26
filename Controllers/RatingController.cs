@@ -45,7 +45,7 @@ namespace aninja_rating_service.Controllers
                 Comment = ratingAddDto.Comment
             };
             var result = await _mediator.Send(request);
-            if(result is null) return Forbid();
+            if(result is null) return NotFound();
             return Ok(_mapper.Map<RatingDto>(result));
         }
         [HttpGet("anime/{animeId}/rating/avg")]
