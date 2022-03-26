@@ -14,8 +14,9 @@ public class RatingRepository : IRatingRepository
         _animeCollection = mongoClient.GetDatabase("ratingDB").GetCollection<Anime>("animes");
     }
 
-    public async Task<IEnumerable<Rating>> GetRatingsForAnime(int animeId)
+    public async Task<IEnumerable<Rating>?> GetRatingsForAnime(int animeId)
     {
+        if(!await AnimeExists(animeId)) return null;
         var cursor = await _ratingCollection.FindAsync(x => x.AnimeId == animeId);
         var result = await cursor.ToListAsync();
         return result;
