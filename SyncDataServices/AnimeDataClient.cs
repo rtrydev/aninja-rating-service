@@ -1,4 +1,3 @@
-using aninja_anime_service;
 using aninja_rating_service.Models;
 using AutoMapper;
 using Grpc.Net.Client;

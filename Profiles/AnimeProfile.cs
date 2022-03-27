@@ -1,5 +1,4 @@
-﻿using aninja_anime_service;
-using aninja_rating_service.Dtos;
+﻿using aninja_rating_service.Dtos;
 using aninja_rating_service.Models;
 using AutoMapper;
 

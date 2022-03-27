@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "aninja_anime_service";
+option csharp_namespace = "aninja_rating_service";
 
 service GrpcAnime {
     rpc GetAllAnime (GetAllRequest) returns (AnimeResponse);
