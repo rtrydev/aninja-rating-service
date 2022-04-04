@@ -85,4 +85,11 @@ public class RatingRepository : IRatingRepository
         var anime = await cursor.FirstOrDefaultAsync();
         return anime;
     }
+
+    public async Task<IEnumerable<Anime>?> GetAnimes()
+    {
+        var cursor = await _animeCollection.FindAsync(x => true);
+        var animes = await cursor.ToListAsync();
+        return animes;
+    } 
 }
