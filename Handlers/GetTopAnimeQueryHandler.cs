@@ -17,7 +17,13 @@ public class GetTopAnimeQueryHandler : IRequestHandler<GetTopAnimeQuery, IEnumer
     public async Task<IEnumerable<Anime>?> Handle(GetTopAnimeQuery request, CancellationToken cancellationToken)
     {
         var animes = await _ratingRepository.GetAnimes();
-        animes = animes.OrderByDescending(async x => await _ratingRepository.GetAverageRatingForAnime(x.ExternalId));
+        var ratings = new List<Rating>();
+        foreach (var anime in animes)
+        {
+            var value = await _ratingRepository.GetAverageRatingForAnime(anime.ExternalId);
+            ratings.Add(new Rating(){AnimeId = anime.ExternalId, Mark = value});
+        }
+        animes = animes.OrderByDescending(x => ratings.First(y => y.AnimeId == x.ExternalId).Mark).ToArray();
         animes = animes.Count() < 10 ? animes : animes.Take(10);
         return animes;
     }
