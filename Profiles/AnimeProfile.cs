@@ -14,6 +14,8 @@ namespace aninja_rating_service.Profiles
             CreateMap<GrpcAnimeModel, Anime>()
                 .ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.AnimeId))
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<Anime, AnimeDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ExternalId));
 
         }
     }
