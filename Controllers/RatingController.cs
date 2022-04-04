@@ -59,6 +59,13 @@ namespace aninja_rating_service.Controllers
             return Ok(result);
         }
 
+        [HttpGet("anime/top")]
+        public async Task<ActionResult<IEnumerable<AnimeDto>>> GetTopAnimes()
+        {
+            var result = await _mediator.Send(new GetTopAnimeQuery());
+            return Ok(_mapper.Map<IEnumerable<AnimeDto>>(result));
+        }
+
         [HttpGet("user/{userId}/rating")]
         public async Task<ActionResult<IEnumerable<RatingDto>>> GetRatingsByUser(string userId)
         {

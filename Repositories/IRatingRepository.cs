@@ -16,4 +16,5 @@ public interface IRatingRepository
     public Task<Anime?> UpdateAnime(Anime anime);
     public Task DeleteAnime(int animeId);
     public Task<bool> AnimeExists(int animeId);
+    public Task<IEnumerable<Anime>?> GetAnimes();
 }
