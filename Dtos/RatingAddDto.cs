@@ -6,7 +6,7 @@ namespace aninja_rating_service.Dtos
     {
         [Range(1, 10)]
         public decimal Mark { get; set; }
-        [MaxLength(500)]
+        [MaxLength(2000)]
         public string Comment { get; set; }
     }
 }
