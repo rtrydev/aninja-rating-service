@@ -18,6 +18,7 @@ public class GetTopAnimeQueryHandler : IRequestHandler<GetTopAnimeQuery, IEnumer
     {
         var animes = await _ratingRepository.GetAnimes();
         animes = animes.OrderByDescending(async x => await _ratingRepository.GetAverageRatingForAnime(x.ExternalId));
+        animes = animes.Count() < 10 ? animes : animes.Take(10);
         return animes;
     }
 }
