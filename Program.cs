@@ -13,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<IMongoClient>(new MongoClient(builder.Configuration.GetConnectionString("MongoDB")));
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IHttpAnimeDataClient, HttpAnimeDataClient>();
 
 builder.Services.AddTransient<IRatingRepository, RatingRepository>();
 
